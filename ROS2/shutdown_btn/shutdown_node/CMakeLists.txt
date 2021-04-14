@@ -10,7 +10,7 @@ endif()
 # find dependencies
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
-find_package(std_msgs REQUIRED)
+find_package(example_interfaces REQUIRED)
 
 #------------------------------------------------
 
@@ -23,7 +23,7 @@ add_executable(shutdown_node
 )
 ament_target_dependencies(shutdown_node
   rclcpp
-  std_msgs
+  example_interfaces
 )
 
 if(BUILD_TESTING)
