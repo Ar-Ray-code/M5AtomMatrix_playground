@@ -1,5 +1,5 @@
 #include <rclcpp/rclcpp.hpp>
-#include <std_msgs/msg/bool.hpp>
+#include <example_interfaces/msg/bool.hpp>
 
 using std::placeholders::_1;
 
@@ -12,15 +12,15 @@ class shutdown_subscriber:public rclcpp::Node
     public:
         shutdown_subscriber():Node("shutdown_node")
         {
-            sub_ = this->create_subscription<std_msgs::msg::Bool>("btn_msg", 1, std::bind(&shutdown_subscriber::btnmsg_callback, this, _1));
+            sub_ = this->create_subscription<example_interfaces::msg::Bool>("btn_msg", 1, std::bind(&shutdown_subscriber::btnmsg_callback, this, _1));
         }
     private:
         
-        void btnmsg_callback(const std_msgs::msg::Bool::SharedPtr msg);
-        rclcpp::Subscription<std_msgs::msg::Bool>::SharedPtr sub_;
+        void btnmsg_callback(const example_interfaces::msg::Bool::SharedPtr msg);
+        rclcpp::Subscription<example_interfaces::msg::Bool>::SharedPtr sub_;
 };
 
-void shutdown_subscriber::btnmsg_callback(const std_msgs::msg::Bool::SharedPtr msg)
+void shutdown_subscriber::btnmsg_callback(const example_interfaces::msg::Bool::SharedPtr msg)
 {
     if(msg->data == 1)
     {

@@ -1,22 +1,14 @@
 #include <ros2arduino.h>
-#include <WiFi.h>
-#include <WiFiUdp.h>
-WiFiUDP udp;
-
 #include "M5Atom.h"
 
-String ssid;
-String pass;
-String agent_ip;
+#define XRCEDDS_PORT  Serial
 
 bool IMU6886Flag = false;
-
 bool led_flag = 1;
 
 //-------------------
-void shutdown_icon();;
-
-void publishInt(std_msgs::Bool* msg, void* arg);
+void shutdown_icon();
+void publishInt(example_interfaces::Bool* msg, void* arg);
 //-------------------
 
 
@@ -25,12 +17,12 @@ class TwistSub : public ros2::Node
   public:
     TwistSub(): Node("m5atom_shutdownBtn")
     {
-      ros2::Publisher<std_msgs::Bool>* publisher_ = this->createPublisher<std_msgs::Bool>("btn_msg");
+      ros2::Publisher<example_interfaces::Bool>* publisher_ = this->createPublisher<example_interfaces::Bool>("btn_msg");
       this->createWallFreq(5, (ros2::CallbackFunc)publishInt, nullptr, publisher_);
     }
 };
 
-void publishInt(std_msgs::Bool* msg, void* arg)
+void publishInt(example_interfaces::Bool* msg, void* arg)
 {
   (void)(arg);
   shutdown_icon();
@@ -71,16 +63,10 @@ void shutdown_icon()
 
 void setup()
 {
-  ssid = "----";
-  pass = "----";
-  agent_ip = "----";
+  XRCEDDS_PORT.begin(115200);
+  while (!XRCEDDS_PORT); 
 
-  M5.begin(true, false, true);
-  Serial.begin(115200);
-  WiFi.begin(ssid.c_str(), pass.c_str());
-  while (WiFi.status() != WL_CONNECTED);
-  ros2::init(&udp, agent_ip.c_str(), 2018);
-
+  ros2::init(&XRCEDDS_PORT);
   delay(50);
 
 }
